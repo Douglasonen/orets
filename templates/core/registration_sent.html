@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="alert alert-success">
+    <h4>Registration Successful!</h4>
+    <p>We've sent a verification email to your address. Please check your inbox and click the activation link.</p>
+    <p>Didn't receive the email? <a href="{% url 'resend_activation' %}">Resend activation email</a></p>
+  </div>
+</div>
+{% endblock %}

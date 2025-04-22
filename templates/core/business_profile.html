@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Business Profile</h3>
+                </div>
+                
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Business Information -->
+                        <div class="form-group">
+                            <label for="id_business_name">Business Name*</label>
+                            <input type="text" name="business_name" value="{{ form.business_name.value|default_if_none:'' }}" 
+                                   class="form-control" id="id_business_name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_industry">Industry*</label>
+                            <input type="text" name="industry" value="{{ form.industry.value|default_if_none:'' }}" 
+                                   class="form-control" id="id_industry" required>
+                        </div>
+                        
+                        <!-- Contact Information -->
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="id_phone_number">Phone Number*</label>
+                                <input type="tel" name="phone_number" value="{{ form.phone_number.value|default_if_none:'' }}" 
+                                       class="form-control" id="id_phone_number" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="id_whatsapp_number">WhatsApp Number</label>
+                                <input type="tel" name="whatsapp_number" value="{{ form.whatsapp_number.value|default_if_none:'' }}" 
+                                       class="form-control" id="id_whatsapp_number"
+                                       placeholder="+2348012345678">
+                                <small class="form-text text-muted">Include country code</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_email">Email*</label>
+                            <input type="email" name="email" value="{{ form.email.value|default_if_none:'' }}" 
+                                   class="form-control" id="id_email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_address">Address*</label>
+                            <textarea name="address" class="form-control" id="id_address" 
+                                      rows="3" required>{{ form.address.value|default_if_none:'' }}</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_website">Website</label>
+                            <input type="url" name="website" value="{{ form.website.value|default_if_none:'' }}" 
+                                   class="form-control" id="id_website"
+                                   placeholder="https://example.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="id_description">Description*</label>
+                            <textarea name="description" class="form-control" id="id_description" 
+                                      rows="5" required>{{ form.description.value|default_if_none:'' }}</textarea>
+                        </div>
+                        
+                        <!-- Logo Upload -->
+                        <div class="form-group">
+                            <label for="id_logo">Business Logo</label>
+                            <div class="custom-file">
+                                <input type="file" name="logo" class="custom-file-input" id="id_logo">
+                                <label class="custom-file-label" for="id_logo">
+                                    {% if form.instance.logo %}
+                                        Current: {{ form.instance.logo.name }}
+                                    {% else %}
+                                        Choose file
+                                    {% endif %}
+                                </label>
+                            </div>
+                            {% if form.instance.logo %}
+                                <img src="{{ form.instance.logo.url }}" class="img-thumbnail mt-2" width="150">
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                            <a href="{% url 'dashboard' %}" class="btn btn-secondary px-4 ml-2">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- Custom file input styling -->
+<script>
+document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+    var fileName = document.getElementById("id_logo").files[0].name;
+    var nextSibling = e.target.nextElementSibling;
+    nextSibling.innerText = fileName;
+});
+</script>
+
+<style>
+    .form-row {
+        margin-bottom: 1rem;
+    }
+    #id_whatsapp_number {
+        border-left: 3px solid #25D366;
+    }
+    .custom-file-label::after {
+        content: "Browse";
+    }
+</style>
+{% endblock %}
