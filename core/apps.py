@@ -1,0 +1,15 @@
+from django.apps import AppConfig
+
+
+#class CoreConfig(AppConfig):
+ #   default_auto_field = 'django.db.models.BigAutoField'
+  #  name = 'core'
+    
+    #def ready(self):
+     #   import core.signals  # if you have signals
+class CoreConfig(AppConfig):
+    name = 'core'
+    
+    def ready(self):
+        # Ensure models are loaded
+        from . import models  # noqa
